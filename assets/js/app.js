@@ -32,8 +32,6 @@ async function fetchURLs() {
         fetch(`https://pokeapi.co/api/v2/pokemon/${realId}`).then((response) => response.json()),// parse each response as json
         fetch(`https://pokeapi.co/api/v2/pokemon-species/${realId}`).then((response) => response.json())
       ]);
-console.log(dataBothUrl[0]);
-console.log(dataBothUrl[1]);
       $(".modal-content").append("<img db-id='" + dataBothUrl[0].id + "'' src='" + dataBothUrl[0].sprites.front_shiny + "' alt=''><h2>" + dataBothUrl[0].name + "</h2><p id='description'></p><p>Height: " + dataBothUrl[0].height + "</p><p>Weight: " + dataBothUrl[0].weight + "</p><ul id='abilities'>Abilities:</ul><ul id='types'>Types:</ul><p>Habitat: " + dataBothUrl[1].habitat.name + "</p><p>Evolves from: " + dataBothUrl[1].evolves_from_species.name + "</p><p>Generation: " + dataBothUrl[1].generation.name + "</p>");
       let abilities = dataBothUrl[0].abilities;
       abilities.forEach(el =>{
@@ -48,7 +46,6 @@ console.log(dataBothUrl[1]);
       let flavorText = dataBothUrl[1].flavor_text_entries;
       flavorText.forEach(el =>{
         if(el.language.name === "en" && el.version.name === "x" ){
-          console.log(el.flavor_text);
           $("#description").append(el.flavor_text);
         }
       });
@@ -67,7 +64,7 @@ console.log(dataBothUrl[1]);
 
 
 $.ajax({
-  url : 'http://pokeapi.salestock.net/api/v2/pokemon/?limit=10', //942
+  url : 'http://pokeapi.salestock.net/api/v2/pokemon/?limit=942', //942
   type: 'GET',
   success: success
 });
