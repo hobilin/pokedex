@@ -1,48 +1,67 @@
-$(document).ready(function() {
-
-});
 
 function success(data){
   let results = data.results;
-  for(var x in results){
-    let pokeUrl = results[x].url;
+  results.forEach(el =>{
+    let pokeUrl = el.url;
     $.ajax({
       url: pokeUrl,
       type: 'GET',
       success: function(data){
-          $('#pokemon').append('<img data-toggle="modal" data-target="#myModal" class="thisPoke" db-id="' + data.id + '" src="' + data.sprites.front_shiny + '" alt="">')
-         $('.thisPoke').click(function(){
-            let idPoke = $(this).attr("db-id");
-          $.get("https://pokeapi.co/api/v2/pokemon/" + idPoke + "/",(dataPoke, status)=>{
-            if(status === "success"){
-              console.log(data);
-               $(".modal-content").empty();
-              $(".modal-content").append("<img db-id='" + dataPoke.id + "'' src='" + $(this).attr("src") + "' alt=''><h2>" + dataPoke.name + "</h2><p id='description'></p>");
-                                      $.get("https://pokeapi.co/api/v2/pokemon-species/" + idPoke + "/",(dataDes, status)=>{
-                if(status === "success"){
-                  let flavorText = dataDes.flavor_text_entries;
-                  for(var y in flavorText){
-                    if(flavorText[y].language.name === "en" && flavorText[y].version.name === "x" ){
-                      console.log(flavorText[y].flavor_text);
-                      $("#description").append(flavorText[y].flavor_text);
-                    }
-                  }return;
-                } else {
-                  console.log(status);
-                }
-              });
-              return;
-            }else{
-              console.log(status);
-            }
-            });
+          $('#pokemon').append('<img data-toggle="modal" data-target="#myModal" id="' + data.id + '" class="thisPoke" db-id="' + data.name + '" src="' + data.sprites.front_shiny + '" alt="">')
+              $('#pokeSearch').keyup(function() {
+      var findPoke = $(this).val();
+      $('.thisPoke').hide();
 
-  });
-          }
+      $('.thisPoke').each(function() {
+        var search = $(this).attr('db-id');
+        if (search.indexOf(findPoke) != -1) {
+          $(this).show();
+        }
+      });
+    });
+         $('.thisPoke').click(function(event){
+          event.stopImmediatePropagation();
+          $('#myModal').modal('show');
+          $(".modal-content").empty();
+            let idPoke = $(this).attr("db-id");
+            let realId = $(this).attr("id");
+async function fetchURLs() {
+    try {
+      // Promise.all() lets us coalesce multiple promises into a single super-promise
+      var dataBothUrl = await Promise.all([
+        fetch(`https://pokeapi.co/api/v2/pokemon/${realId}`).then((response) => response.json()),// parse each response as json
+        fetch(`https://pokeapi.co/api/v2/pokemon-species/${realId}`).then((response) => response.json())
+      ]);
+console.log(dataBothUrl[0]);
+console.log(dataBothUrl[1]);
+      $(".modal-content").append("<img db-id='" + dataBothUrl[0].id + "'' src='" + dataBothUrl[0].sprites.front_shiny + "' alt=''><h2>" + dataBothUrl[0].name + "</h2><p id='description'></p><p>Height: " + dataBothUrl[0].height + "</p><p>Weight: " + dataBothUrl[0].weight + "</p><ul id='abilities'>Abilities:</ul><ul id='types'>Types:</ul><p>Habitat: " + dataBothUrl[1].habitat.name + "</p><p>Evolves from: " + dataBothUrl[1].evolves_from_species.name + "</p><p>Generation: " + dataBothUrl[1].generation.name + "</p>");
+      let abilities = dataBothUrl[0].abilities;
+      abilities.forEach(el =>{
+        $('#abilities').append('<li>' + el.ability.name + '</li>');
+      });
+
+      let types = dataBothUrl[0].types;
+      types.forEach(el =>{
+        $('#types').append('<li>' + el.type.name + '</li>');
+      });
+
+      let flavorText = dataBothUrl[1].flavor_text_entries;
+      flavorText.forEach(el =>{
+        if(el.language.name === "en" && el.version.name === "x" ){
+          console.log(el.flavor_text);
+          $("#description").append(el.flavor_text);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  } fetchURLs();
+});
+       }
 
 
       });
-  };
+  });
              
 };
 
