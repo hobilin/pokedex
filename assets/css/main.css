@@ -5797,5 +5797,15 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+.input-field {
+  padding-top: 1em;
+  padding-bottom: 1em; }
+
+.thisPoke {
+  background-color: #EDCFCF;
+  padding: 0.5em;
+  border-radius: 100%;
+  border: 1px solid #000;
+  margin: 0.5em; }
 
 /*# sourceMappingURL=main.css.map */

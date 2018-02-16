@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pokedex</title>
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -15,19 +16,23 @@
   </div>
 </div>
 
-<div class="input-field">
-  <span class="glyphicon glyphicon-search" aria-hidden="true">search</span>
-  <input id="pokeSearch" type="text" class="validate" placeholder="search for your pokemon">
+<div class="container">
+  <div class="row"><img class="logo col-md-12 col-xs-12" src="assets/img/logo.png" alt=""></div>
+  <div class="input-field row">
+  <input id="pokeSearch" type="text" class="validate col-md-6 col-xs-11 col-md-offset-3" placeholder="search for your pokemon"><i class="fas fa-search"></i>
+
 </div>
 
-<section id="pokemon">
-  <img src="" alt="">
-</section>
+<section id="pokemon" class="row">
 
+</section>
+</div>
 
 
   <script src="assets/js/jquery-3.2.1.min.js"></script>
   <script src="sass/assets/javascripts/bootstrap.min.js"></script>
   <script src="assets/js/app.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
 </body>
 </html>
